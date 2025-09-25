@@ -2,30 +2,48 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Sheet Test</title>
+  <title>Google Sheets Form Test</title>
 </head>
 <body>
-  <h1>Send test data</h1>
-  <button onclick="sendData()">Send</button>
+  <h1>Google Sheets Input Test</h1>
+
+  <button onclick="sendJSON()">Send JSON</button>
+  <button onclick="sendForm()">Send Form Data</button>
+
   <p id="status"></p>
 
   <script>
-    async function sendData() {
-      const url = "https://script.google.com/macros/s/AKfycbwAAy7csuylzZ846emfvetgC0eAN76Ws9FFtZ6wwEA5dV3yZxrMi-p-3ba_qzRfL9vJBQ/exec"; // paste from Apps Script
+    const SCRIPT_URL = "PASTE_YOUR_EXEC_URL_HERE"; // <-- replace with your /exec URL
 
+    // Option 1: Send as JSON
+    async function sendJSON() {
       try {
-        const response = await fetch(url, {
+        const response = await fetch(SCRIPT_URL, {
           method: "POST",
-          body: JSON.stringify({ name: "Hello from HTML" }),
-          headers: {
-            "Content-Type": "application/json"
-          }
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: "Hello via JSON" })
         });
 
         const text = await response.text();
-        document.getElementById("status").innerText = "Response: " + text;
+        document.getElementById("status").innerText = "JSON response: " + text;
       } catch (err) {
-        document.getElementById("status").innerText = "Error: " + err;
+        document.getElementById("status").innerText = "JSON error: " + err;
+      }
+    }
+
+    // Option 2: Send as form-urlencoded
+    async function sendForm() {
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({ name: "Hello via Form" })
+        });
+
+        const text = await response.text();
+        document.getElementById("status").innerText = "Form response: " + text;
+      } catch (err) {
+        document.getElementById("status").innerText = "Form error: " + err;
       }
     }
   </script>
