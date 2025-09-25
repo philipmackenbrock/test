@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sheet Test</title>
+</head>
+<body>
+  <h1>Send test data</h1>
+  <button onclick="sendData()">Send</button>
+  <p id="status"></p>
+
+  <script>
+    async function sendData() {
+      const url = "YOUR_WEB_APP_URL_HERE"; // paste from Apps Script
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify({ name: "Hello from HTML" }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        const text = await response.text();
+        document.getElementById("status").innerText = "Response: " + text;
+      } catch (err) {
+        document.getElementById("status").innerText = "Error: " + err;
+      }
+    }
+  </script>
+</body>
+</html>
